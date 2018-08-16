@@ -1,0 +1,47 @@
+<!-- Map -->
+<div id="yMap-{{__SELF__.id}}" style="height: {{__SELF__.property('height')}}; width: {{__SELF__.property('width')}};"></div>
+<script>
+function initialize()
+{
+    {% set location = __SELF__.location %}
+
+    var x = "{{__SELF__.latitude}}",
+    y = "{{__SELF__.longitude}}",
+    zoom = "{{__SELF__.property('zoom')}}",
+    type = "{{__SELF__.property('mapTypeId')}}",
+    mapDiv = "yMap-{{__SELF__.id}}",
+    {BalloonLayout, BalloonContentLayout} = YaMapsGetLayoutMap(ymaps);
+
+    // Создание карты.    
+    var yMap = new ymaps.Map(mapDiv, {
+        center: [x, y],
+        zoom: zoom,
+        type: (type) ? type : "yandex#map"
+    });
+
+    {% if (__SELF__.property('showMarker')) %}
+        var placemark = new ymaps.Placemark([x, y], {
+            {% if location.enable_balloon %}
+                balloonHeader: `{{location.name|raw}}`,
+                balloonContent: `{{location.info_window|raw}}`
+            {% endif %}
+        }, {
+            {% if location.enable_balloon %}
+            balloonShadow: false,
+            balloonLayout: BalloonLayout,
+            balloonContentLayout: BalloonContentLayout,
+            balloonPanelMaxMapArea: 0,
+            hideIconOnBalloonOpen: false,
+            balloonOffset: [0, -10],
+            {% endif %}
+            preset: "{{location.marker_type}}",
+            iconColor: '{{location.marker_color}}'
+        });
+        yMap.geoObjects.add(placemark);
+    {% endif %}
+
+}
+document.addEventListener("DOMContentLoaded", function() {
+    ymaps.ready(initialize);
+});
+</script>
