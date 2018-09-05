@@ -40,7 +40,8 @@ class YaMaps extends FormWidgetBase
         // User can edit placemarks
         $this->vars['editable'] = $this->getConfig('editable', true);
         $this->vars['height'] = $this->getConfig('height', '400px');
-        
+        $this->vars['zoom'] = $this->getConfig('zoom', 15);
+
         // Add markers array
         $this->vars['markers'] = "[]";
         $markersKey = $this->getConfig('markers');
@@ -50,8 +51,13 @@ class YaMaps extends FormWidgetBase
             $this->fieldPosition['latitude'] = !empty($this->fieldPosition['latitude']) ? $this->fieldPosition['latitude'] : $this->latitude;
             $this->fieldPosition['longitude'] = !empty($this->fieldPosition['longitude']) ? $this->fieldPosition['longitude'] : $this->longitude;
 
-            $this->vars['value'] = implode(',', [
-                $this->fieldPosition['latitude'], $this->fieldPosition['longitude']
+            $value = [
+                $this->fieldPosition['latitude'],
+                $this->fieldPosition['longitude']
+            ];
+
+            $this->vars['value'] = json_encode([
+                "position" => $value
             ]);
         }
     }

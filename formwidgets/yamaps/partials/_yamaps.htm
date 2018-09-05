@@ -15,6 +15,21 @@
             <?= $field->getAttributes() ?>
             <?= $this->getFieldMapAttributes() ?>
             />
+
+        <? if($editable === true): ?>
+        <div style="float: left;width: 100%;margin-top: 10px">
+            <div class="form-group  text-field span-left">
+                <label for="<?= $this->getId('textarea') ?>_latitude">latitude</label>
+                <input type="text" id="<?= $this->getId('textarea') ?>_latitude" value="" placeholder="" class="form-control" autocomplete="off">
+            </div>
+
+            <div class="form-group  text-field span-right">
+                <label for="<?= $this->getId('textarea') ?>_longitude">longitude</label>
+                <input type="text"id="<?= $this->getId('textarea') ?>_longitude" value="" placeholder="" class="form-control" autocomplete="off" >
+            </div>
+        </div>
+        <?endif;?>
+
     </div>
 <?php endif ?>
 <script type="text/javascript">
@@ -23,11 +38,11 @@ $(function(){
     mapDiv = "<?= $this->getId('textarea') ?>",
     options = {
         editable: <?=($editable === true) ? "true" : "false" ?>,
-        markers: <?=$markers?>
+        <?if (!empty($markers)):?> markers: <?=$markers?> <?endif;?>
     },
     getMapPosition = parsePos($("#" + mapDiv).val());
 
     marker["<?= $field->fieldName; ?>"] = fieldName;
-    inicializar(getMapPosition[0], getMapPosition[1], 15, fieldName, mapDiv, options);
+    inicializar(getMapPosition[0], getMapPosition[1], <?=e($zoom)?>, fieldName, mapDiv, options);
 });
 </script>

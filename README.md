@@ -32,6 +32,7 @@ map:
         longitude: '37.62009153512286'
     height: "380px"
     editable: false
+    zoom: 15
     markers: locations #The name of the column in which the markers are stored
 ```
 

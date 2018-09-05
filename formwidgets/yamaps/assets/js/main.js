@@ -64,6 +64,12 @@ function inicializar(x, y, zoom, index, mapDiv, custom)
              placemark.geometry.setCoordinates(mark);
              yMap.setCenter(mark);
         });
+
+        $('#' + mapDiv).on('input', function(event) {
+            updateValuesLongitudeLatitude("#" + mapDiv, $(this).val());
+        }).trigger('input');
+
+        bindChangeLongitudeLatitude("#" + mapDiv, placemark, yMap);
     }
   
 }
@@ -71,7 +77,7 @@ function inicializar(x, y, zoom, index, mapDiv, custom)
 function placeMarker(mapDiv, setMapPosition)
 {
     var value = { position: setMapPosition };
-    $('#' + mapDiv).val(JSON.stringify(value));
+    $('#' + mapDiv).val(JSON.stringify(value)).trigger('input');
 }
 
 function addMarker(map, position) {
@@ -80,4 +86,46 @@ function addMarker(map, position) {
         iconColor: '#ff0000',
         // draggable: true
     });
+}
+
+function bindChangeLongitudeLatitude(inputId, placemark, yMap) {
+    var elements = {
+        latitude: $(inputId+"_latitude"),
+        longitude: $(inputId+"_longitude")
+    }
+
+    if(inputId && elements.latitude.length && elements.longitude.length) {
+        $("body").on("input", inputId+"_latitude, "+inputId+"_longitude", function(event) {
+            if(!event.originalEvent.data) return;
+
+            var allow = [];
+            for (var i = 10; i >= 0; i--) allow.push(i)
+            allow.push('.');
+
+            if(!allow.includes(parseInt(event.originalEvent.data)) && !allow.includes(event.originalEvent.data)) {
+                $(this).val($(this).val().replace(event.originalEvent.data, ""));
+                console.info('Только цифры и "."')
+            }else{
+
+                var position = [
+                    elements.latitude.val(),
+                    elements.longitude.val()
+                ];
+                placemark.geometry.setCoordinates(position);
+                yMap.setCenter(position);
+            }
+        });
+    }
+}
+
+function updateValuesLongitudeLatitude(inputId, value) {
+    var elements = {
+        latitude: $(inputId+"_latitude"),
+        longitude: $(inputId+"_longitude")
+    }
+    if(value && inputId && elements.latitude.length && elements.longitude.length) {
+        var position = parsePos(value);
+        elements.latitude.val(position[0]);
+        elements.longitude.val(position[1]);
+    }
 }
