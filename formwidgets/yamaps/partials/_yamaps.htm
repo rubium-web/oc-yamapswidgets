@@ -38,7 +38,7 @@ $(function(){
     mapDiv = "<?= $this->getId('textarea') ?>",
     options = {
         editable: <?=($editable === true) ? "true" : "false" ?>,
-        <?if (!empty($markers)):?> markers: <?=$markers?> <?endif;?>
+        <?php if (!empty($markers)):?> markers: <?=$markers?> <?php endif;?>
     },
     getMapPosition = parsePos($("#" + mapDiv).val());
 

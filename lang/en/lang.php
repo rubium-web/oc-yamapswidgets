@@ -5,11 +5,18 @@ return [
         'description' => 'It provides functionality for the Backend Forms that allows to save maps of YaMaps in an easy and fast way.',
     ],
     'settings' => [
-        'tab' => 'YaMaps Widget',
+        'tab'=> [
+            'map' => 'Map',
+            'settings' => 'Settings',
+        ],
         'label' => 'YaMaps Widget',
         'description' => 'Configuring YaMaps',
         'address_map' => 'YaMaps',
-        'address_map_comment' => 'An example of using the YaMaps widget. You can display the map using the yaMap component, specifying the required parameters.'
+        'address_map_comment' => 'An example of using the YaMaps widget. You can display the map using the yaMap component, specifying the required parameters.',
+        'apikey' => 'API-key',
+        'description_apikey' => 'You can get the key in the Developer\'s Office',
+        'lang' => 'Locale',
+        'description_lang' => 'Locale. It is given as: lang=language_region',
     ],
     'permissions' => [
         'tab' => 'YaMaps Widget',

@@ -1,10 +1,15 @@
-<?php namespace Rubium\YaMapsWidgets\Components;
+<?php
+
+namespace Rubium\YaMapsWidgets\Components;
 
 use Cms\Classes\ComponentBase;
 use Rubium\YaMapsWidgets\Models\Settings;
 
 class YaMapDemo extends ComponentBase
 {
+    public $apikey;
+    public $lang;
+    public $js;
     public $longitude;
     public $latitude;
     public $location;
@@ -19,7 +24,7 @@ class YaMapDemo extends ComponentBase
 
     public function defineProperties()
     {
-        
+
         return [
             'width' => [
                 'title'             => 'rubium.yamapswidgets::lang.component.width',
@@ -37,12 +42,26 @@ class YaMapDemo extends ComponentBase
                 'title'             => 'rubium.yamapswidgets::lang.component.mapType',
                 'default'           => 'yandex#map',
                 'type'              => 'dropdown',
-                'options'           => ['yandex#map'=>'Sheme', 'yandex#satellite'=>'Sputnik', 'yandex#hybrid'=>'Hybrid']
+                'options'           => [
+                                        'yandex#map' => 'Sheme',
+                                        'yandex#satellite' => 'Sputnik',
+                                        'yandex#hybrid' => 'Hybrid'
+                                    ]
             ],
             'zoom' => [
                 'title'             => 'rubium.yamapswidgets::lang.component.zoom',
                 'default'           => 12,
                 'type'              => 'string',
+            ],
+            'latitude' => [
+                'title'             => 'rubium.yamapswidgets::lang.component.latitude',
+                'default'           => 0,
+                'type'              => 'integer',
+            ],
+            'longitude' => [
+                'title'             => 'rubium.yamapswidgets::lang.component.longitude',
+                'default'           => 0,
+                'type'              => 'integer',
             ],
             'showMarker' => [
                 'title'             => 'rubium.yamapswidgets::lang.component.showMarker',
@@ -58,16 +77,23 @@ class YaMapDemo extends ComponentBase
 
         $address_map = @json_decode($settings->latlng, true)['position'];
 
-        if(empty($address_map) || count($address_map) != 2) $address_map = ["55.75417429118003","37.62009153512286"];
+        if (empty($address_map) || count($address_map) != 2) {
+            $address_map = ["55.75417429118003","37.62009153512286"];
+        }
 
         $this->location = $settings;
-        
-        $this->addJs('//api-maps.yandex.ru/2.1/?lang=ru_RU');
+
+        $this->apikey = $settings->apikey ?: '';
+        $this->lang = $settings->lang ?: '';
+
+        $this->js = "//api-maps.yandex.ru/2.1/?apikey={$this->apikey}&lang={$this->lang}";
+
+        $this->addJs($this->js);
+
         $this->addJs('/plugins/rubium/yamapswidgets/assets/js/script.js');
         $this->addCss('/plugins/rubium/yamapswidgets/assets/css/style.css');
-        
-        $this->latitude = $address_map[0];
-        $this->longitude = $address_map[1];
 
+        $this->latitude = $this->property('latitude') ?  $this->property('latitude') : $address_map[0];
+        $this->longitude = $this->property('latitude') ?  $this->property('longitude') : $address_map[1];
     }
 }

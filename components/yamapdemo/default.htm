@@ -41,7 +41,5 @@ function initialize()
     {% endif %}
 
 }
-document.addEventListener("DOMContentLoaded", function() {
-    ymaps.ready(initialize);
-});
+window.onload = () => ymaps.ready(initialize);
 </script>

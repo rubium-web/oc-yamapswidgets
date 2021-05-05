@@ -1,0 +1,15 @@
+{
+    "name": "rubium/yamapswidgets",
+    "description": "Backend Yandex Maps Widgets for OctoberCMS.",
+    "homepage": "https://github.com/rubium-web/oc-yamapswidgets",
+    "type": "october-plugin",
+    "license": "MIT",
+    "keywords": ["october", "yandex-maps"],
+    "authors": [
+        {
+            "name": "Rubium Web",
+            "email": "radist@rubium.ru",
+            "role": "Creator"
+        }
+    ]
+}

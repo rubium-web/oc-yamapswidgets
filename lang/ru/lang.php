@@ -5,11 +5,18 @@ return [
         'description' => 'Обеспечивает функциональность бэкэнд-форм, что позволяет легко и быстро сохранять карты YaMaps.',
     ],
     'settings' => [
-        'tab' => 'Виджет YaMaps',
+        'tab'=> [
+            'map' => 'Карта',
+            'settings' => 'Настройки',
+        ],
         'label' => 'Виджет YaMaps',
         'description' => 'Настройка карты YaMaps',
         'address_map' => 'YaMaps',
-        'address_map_comment' => 'Пример использования виджета YaMaps. Вы можете вывести карту при помощи компонента yaMap, указав необходимые параметры.'
+        'address_map_comment' => 'Пример использования виджета YaMaps. Вы можете вывести карту при помощи компонента yaMap, указав необходимые параметры.',
+        'apikey' => 'API-ключ',
+        'description_apikey' => 'API-ключ. Получить ключ можно в Кабинете разработчика',
+        'lang' => 'Локаль',
+        'description_lang' => 'Локаль. Задается в виде: lang=language_region',
     ],
     'permissions' => [
         'tab' => 'Виджет YaMaps',
