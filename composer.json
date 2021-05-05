@@ -1,5 +1,5 @@
 {
-    "name": "rubium/yamapswidgets",
+    "name": "rubium/yamapswidgets-plugin",
     "description": "Backend Yandex Maps Widgets for OctoberCMS.",
     "homepage": "https://github.com/rubium-web/oc-yamapswidgets",
     "type": "october-plugin",
