@@ -1,4 +1,6 @@
-<?php namespace Rubium\YaMapsWidgets;
+<?php
+
+namespace Rubium\YaMapsWidgets;
 
 use System\Classes\PluginBase;
 use System\Classes\PluginManager;

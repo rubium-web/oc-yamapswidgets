@@ -1,58 +1,86 @@
-fields:
-  
-  name:
-    label: rubium.yamapswidgets::lang.maps.name
-    span: left
-    comment: 'Name show in balloon title'
-    default: 'Красная площадь'
-
-  latlng:
-    label: rubium.yamapswidgets::lang.settings.address_map
-    comment: rubium.yamapswidgets::lang.maps.description_location
-    size: small
-    span: right
-    type: yamaps
-    fieldPosition:
-        latitude: '55.75417429118003'
-        longitude: '37.62009153512286'      
-    height: '380px'
-    default: '{ "position" : [55.75417429118003,37.62009153512286] }'    
-
-  address:
-      label: rubium.yamapswidgets::lang.maps.address
-      type: yaddress
-      target: Settings[latlng]
+tabs:
+  fields:
+    
+    name:
+      label: rubium.yamapswidgets::lang.maps.name
+      tab: rubium.yamapswidgets::lang.settings.tab.map
       span: left
-      comment: rubium.yamapswidgets::lang.maps.description_address
-      default: 'Красная площадь, Москва, Россия'
+      comment: 'Name show in balloon title'
+      default: 'Красная площадь'
 
-  marker_type:
-      label: rubium.yamapswidgets::lang.maps.marker_type
-      type: dropdown
-      options:
-          'islands#icon' : rubium.yamapswidgets::lang.marker.standart
-          'islands#dotIcon' : rubium.yamapswidgets::lang.marker.dot
-          'islands#circleIcon' : rubium.yamapswidgets::lang.marker.circle
-          'islands#circleDotIcon' : rubium.yamapswidgets::lang.marker.circle_dot
-      default: 'islands#icon'
+    latlng:
+      label: rubium.yamapswidgets::lang.settings.address_map
+      tab: rubium.yamapswidgets::lang.settings.tab.map
+      comment: rubium.yamapswidgets::lang.maps.description_location
+      size: small
+      span: right
+      type: yamaps
+      fieldPosition:
+          latitude: '55.75417429118003'
+          longitude: '37.62009153512286'      
+      height: '380px'
+      default: '{ "position" : [55.75417429118003,37.62009153512286] }'    
+
+    address:
+        label: rubium.yamapswidgets::lang.maps.address
+        tab: rubium.yamapswidgets::lang.settings.tab.map
+        type: yaddress
+        target: Settings[latlng]
+        span: left
+        comment: rubium.yamapswidgets::lang.maps.description_address
+        default: 'Красная площадь, Москва, Россия'
+
+    marker_type:
+        label: rubium.yamapswidgets::lang.maps.marker_type
+        tab: rubium.yamapswidgets::lang.settings.tab.map
+        type: dropdown
+        options:
+            'islands#icon' : rubium.yamapswidgets::lang.marker.standart
+            'islands#dotIcon' : rubium.yamapswidgets::lang.marker.dot
+            'islands#circleIcon' : rubium.yamapswidgets::lang.marker.circle
+            'islands#circleDotIcon' : rubium.yamapswidgets::lang.marker.circle_dot
+        default: 'islands#icon'
+        span: left
+        comment: rubium.yamapswidgets::lang.maps.description_marker_type
+
+    marker_color:
+        label: rubium.yamapswidgets::lang.maps.marker_color
+        tab: rubium.yamapswidgets::lang.settings.tab.map
+        type: colorpicker
+        default: '#f52323'
+        span: left
+
+    enable_balloon:
+        label: rubium.yamapswidgets::lang.maps.enable_balloon
+        tab: rubium.yamapswidgets::lang.settings.tab.map
+        type: switch
+        default: true
+        span: left
+        comment: rubium.yamapswidgets::lang.maps.description_enable_balloon
+
+    info_window:
+        label: rubium.yamapswidgets::lang.maps.info_window
+        tab: rubium.yamapswidgets::lang.settings.tab.map
+        type: Backend\FormWidgets\RichEditor
+        size: huge
+        comment: rubium.yamapswidgets::lang.maps.description_info_window
+    apikey:
+      label: rubium.yamapswidgets::lang.settings.apikey
+      tab: rubium.yamapswidgets::lang.settings.tab.settings
       span: left
-      comment: rubium.yamapswidgets::lang.maps.description_marker_type
-
-  marker_color:
-      label: rubium.yamapswidgets::lang.maps.marker_color
-      type: colorpicker
-      default: '#f52323'
-      span: left
-
-  enable_balloon:
-      label: rubium.yamapswidgets::lang.maps.enable_balloon
-      type: switch
-      default: true
-      span: left
-      comment: rubium.yamapswidgets::lang.maps.description_enable_balloon
-
-  info_window:
-      label: rubium.yamapswidgets::lang.maps.info_window
-      type: Backend\FormWidgets\RichEditor
-      size: huge
-      comment: rubium.yamapswidgets::lang.maps.description_info_window
+      comment: rubium.yamapswidgets::lang.settings.description_apikey
+      default: ''
+    lang:
+        label: rubium.yamapswidgets::lang.settings.lang
+        tab: rubium.yamapswidgets::lang.settings.tab.settings
+        type: dropdown
+        options:
+            ru_RU: ru_RU
+            en_US: en_US
+            en_RU: en_RU
+            ru_UA: ru_UA
+            uk_UA: uk_UA
+            tr_TR: tr_TR
+        default: 'ru_RU'
+        span: left
+        comment: rubium.yamapswidgets::lang.settings.description_lang

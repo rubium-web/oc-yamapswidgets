@@ -1,4 +1,6 @@
-<?php namespace Rubium\YaMapsWidgets\FormWidgets;
+<?php
+
+namespace Rubium\YaMapsWidgets\FormWidgets;
 
 use Html;
 use Backend\Classes\FormWidgetBase;
@@ -19,9 +21,15 @@ use Rubium\YaMapsWidgets\Models\Settings;
  */
 class YaMaps extends FormWidgetBase
 {
-    private $apiKey;
+
+    private $apikey = '';
+
+    private $lang = '';
+
     private $latitude;
+
     private $longitude;
+
     protected $fieldPosition;
 
     public $defaultAlias = 'yamaps';
@@ -45,11 +53,13 @@ class YaMaps extends FormWidgetBase
         // Add markers array
         $this->vars['markers'] = "[]";
         $markersKey = $this->getConfig('markers');
-        if(!empty($markersKey)) $this->vars['markers'] = $this->model->{$markersKey};
+        if (!empty($markersKey)) {
+            $this->vars['markers'] = $this->model->{$markersKey};
+        }
 
         if (empty($this->vars['value'])) {
-            $this->fieldPosition['latitude'] = !empty($this->fieldPosition['latitude']) ? $this->fieldPosition['latitude'] : $this->latitude;
-            $this->fieldPosition['longitude'] = !empty($this->fieldPosition['longitude']) ? $this->fieldPosition['longitude'] : $this->longitude;
+            $this->fieldPosition['latitude'] = !empty($this->fieldPosition['latitude']) ?: $this->latitude;
+            $this->fieldPosition['longitude'] = !empty($this->fieldPosition['longitude']) ?: $this->longitude;
 
             $value = [
                 $this->fieldPosition['latitude'],
@@ -85,21 +95,22 @@ class YaMaps extends FormWidgetBase
 
     public function loadAssets()
     {
-        $this->_setFromSettings();
-
-        $this->addJs('//api-maps.yandex.ru/2.1/?lang=ru_RU');
+        $this->setFromSettings();
+        $this->addJs("//api-maps.yandex.ru/2.1/?apikey={$this->apikey}&lang={$this->lang}");
         $this->addJs('js/main.js', 'core');
     }
 
-    private function _setFromSettings()
+    private function setFromSettings()
     {
         $settingsInstance = Settings::instance();
 
-        if(isset($settingsInstance->attributes['address_map'])){
-          $latLong = explode(',', $settingsInstance->attributes['address_map']);
+        if (isset($settingsInstance->attributes['address_map'])) {
+            $latLong = explode(',', $settingsInstance->attributes['address_map']);
         }
 
         $this->latitude = $latLong[0] ?? '55.75417429118003';
         $this->longitude = $latLong[1] ?? '37.62009153512286';
+        $this->apikey = isset($settingsInstance->attributes['apikey']) ? $settingsInstance->attributes['apikey'] : '';
+        $this->lang = isset($settingsInstance->attributes['lang']) ? $settingsInstance->attributes['lang'] : '';
     }
 }

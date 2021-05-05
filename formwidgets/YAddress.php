@@ -1,7 +1,10 @@
-<?php namespace Rubium\YaMapsWidgets\FormWidgets;
+<?php
+
+namespace Rubium\YaMapsWidgets\FormWidgets;
 
 use Request;
 use Backend\Classes\FormWidgetBase;
+use Rubium\YaMapsWidgets\Models\Settings;
 
 /**
  * Backend Yandex Maps
@@ -13,9 +16,15 @@ use Backend\Classes\FormWidgetBase;
  */
 class YAddress extends FormWidgetBase
 {
-    private $apiKey;
+
+    private $apikey = '';
+
+    private $lang = '';
+
     private $latitude;
+
     private $longitude;
+
     protected $fieldPosition;
 
     public $defaultAlias = 'yaddress';
@@ -36,7 +45,8 @@ class YAddress extends FormWidgetBase
 
     public function loadAssets()
     {
-        $this->addJs('//api-maps.yandex.ru/2.1/?lang=ru_RU');
+        $this->setFromSettings();
+        $this->addJs("//api-maps.yandex.ru/2.1/?apikey={$this->apikey}&lang={$this->lang}");
     }
 
     public function render()
@@ -47,38 +57,55 @@ class YAddress extends FormWidgetBase
     }
 
     public function onGetYAdress()
-    {   
+    {
         $query = Request::get('q');
-        if(empty($query)) return [];
+        if (empty($query)) {
+            return [];
+        }
 
-        $finded = file_get_contents("https://geocode-maps.yandex.ru/1.x/?format=json&geocode=".$query);
+        $url = "https://geocode-maps.yandex.ru/1.x/?apikey={$this->apikey}&format=json&geocode=";
+
+        $finded = file_get_contents($url . $query);
         $options = [];
 
-        try{
+        try {
             $optionsArray = json_decode($finded);
             $i = 0;
-            if($optionsArray->response) {
-                foreach ( $optionsArray->response->GeoObjectCollection->featureMember as $area) {
+            if ($optionsArray->response) {
+                foreach ($optionsArray->response->GeoObjectCollection->featureMember as $area) {
                     $dots = explode(" ", $area->GeoObject->Point->pos);
                     $dots = array_reverse($dots);
                     $dots = implode(",", $dots);
                     $title = $area->GeoObject->metaDataProperty->GeocoderMetaData->text;
 
                     $options[] = [
-                        'title'=> $title,
-                        'text'=> $title,
+                        'title' => $title,
+                        'text' => $title,
                         'value' => $dots,
-                        'id'=> $dots,
+                        'id' => $dots,
                         'disabled' => false
                     ];
                     $i++;
                 }
             }
-        }catch(Exeption $e){
+        }catch (Exeption $e) {
             return ['results' => $options];
         }
 
         return \Response::make(['results' => $options]);
+    }
 
+    private function setFromSettings()
+    {
+        $settingsInstance = Settings::instance();
+
+        if (isset($settingsInstance->attributes['address_map'])) {
+            $latLong = explode(',', $settingsInstance->attributes['address_map']);
+        }
+
+        $this->latitude = $latLong[0] ?? '55.75417429118003';
+        $this->longitude = $latLong[1] ?? '37.62009153512286';
+        $this->apikey = isset($settingsInstance->attributes['apikey']) ? $settingsInstance->attributes['apikey'] : '';
+        $this->lang = isset($settingsInstance->attributes['lang']) ? $settingsInstance->attributes['lang'] : '';
     }
 }
